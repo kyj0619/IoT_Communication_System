@@ -37,7 +37,7 @@ unsigned long count = 0;//insert code end
 #define HEART 2
 #define MOBILE 3  // For wifi send
 
-#define THIS_NODE HEART    /* Please define what this node */
+#define THIS_NODE CENTER    /* Please define what this node */
 
 #define TXpin 11 //11 or D9
 #define RXpin 10 //10 or D8
@@ -132,29 +132,20 @@ void loop() {
       {
         DebugSerial.println("Let Heart send");
 
-//firebase로 gps 데이터를 넘길때
-    if (Firebase.ready() && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0))//insert code start
-  {
-    sendDataPrevMillis = millis();
-    
-    Serial.printf("Set string... %s\n", Firebase.setString(fbdo, F("/Data/gps"), recv) ? "ok" : fbdo.errorReason().c_str());
-
-    Serial.printf("Get string... %s\n", Firebase.getString(fbdo, F("/Data/gps")) ? fbdo.to<const char *>() : fbdo.errorReason().c_str());
-
-    FirebaseJson json;//insert code end
-  }
-
         
-        stat = 1;
-      }
-    }
-    else if(stat == 1) // 직전에 심박 데이터 받았다
+    String recv = SNIPE.lora_recv();
+    if (recv != "AT_RX_TIMEOUT" && recv != "AT_RX_ERROR")
     {
-      if(SNIPE.lora_send("Fire send")) // 화재경보 노드 보내라
-      {
-        DebugSerial.println("Let Fire send");
-
-//firebase로 심박수 데이터를 넘길때
+      DebugSerial.println(recv);
+      DebugSerial.println(SNIPE.lora_getRssi());
+      DebugSerial.println(SNIPE.lora_getSnr());
+          else
+    {
+      DebugSerial.println("recv fail");
+      delay(500);
+    }
+    
+            //firebase로 심박수/gps 데이터를 넘길때
     if (Firebase.ready() && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0))//insert code start
   {
     sendDataPrevMillis = millis();
@@ -165,26 +156,41 @@ void loop() {
 
     FirebaseJson json;//insert code end
   }
-
-        
-        stat = 0;
+        stat = 1;
       }
     }
-    
-    String recv = SNIPE.lora_recv();
+    else if(stat == 1) // 직전에 심박 데이터 받았다
+    {
+      if(SNIPE.lora_send("Fire send")) // 화재경보 노드 보내라
+      {
+        DebugSerial.println("Let Fire send");
+        
+     String recv = SNIPE.lora_recv();
     if (recv != "AT_RX_TIMEOUT" && recv != "AT_RX_ERROR")
     {
       DebugSerial.println(recv);
       DebugSerial.println(SNIPE.lora_getRssi());
-      DebugSerial.println(SNIPE.lora_getSnr());            
-    }
-    else
+      DebugSerial.println(SNIPE.lora_getSnr());
+          else
     {
       DebugSerial.println("recv fail");
       delay(500);
     }
-
     
+            //firebase로 심박수/gps 데이터를 넘길때
+    if (Firebase.ready() && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0))//insert code start
+  {
+    sendDataPrevMillis = millis();
+    
+    Serial.printf("Set string... %s\n", Firebase.setString(fbdo, F("/Data/heartbeat"), recv) ? "ok" : fbdo.errorReason().c_str());
+
+    Serial.printf("Get string... %s\n", Firebase.getString(fbdo, F("/Data/heartbeat")) ? fbdo.to<const char *>() : fbdo.errorReason().c_str());
+
+    FirebaseJson json;//insert code end
+  }
+        stat = 0;
+      }
+    }
     delay(1000);
 
 #elif THIS_NODE == FIRE  // "Fire send" 받았으면 데이터를 보낸다.
