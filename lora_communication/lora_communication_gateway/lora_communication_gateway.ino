@@ -139,7 +139,8 @@ void loop() {
       DebugSerial.println(recv);
       DebugSerial.println(SNIPE.lora_getRssi());
       DebugSerial.println(SNIPE.lora_getSnr());
-          else
+    }
+    else
     {
       DebugSerial.println("recv fail");
       delay(500);
@@ -171,7 +172,8 @@ void loop() {
       DebugSerial.println(recv);
       DebugSerial.println(SNIPE.lora_getRssi());
       DebugSerial.println(SNIPE.lora_getSnr());
-          else
+    }
+    else
     {
       DebugSerial.println("recv fail");
       delay(500);
