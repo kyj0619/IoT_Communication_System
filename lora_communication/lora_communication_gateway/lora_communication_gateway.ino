@@ -39,8 +39,8 @@ unsigned long count = 0;//insert code end
 
 #define THIS_NODE CENTER    /* Please define what this node */
 
-#define TXpin 11 //11 or D9
-#define RXpin 10 //10 or D8
+#define TXpin D9 //11 or D9
+#define RXpin D8 //10 or D8
 #define ATSerial Serial
 
 //16byte hex key
@@ -139,6 +139,15 @@ void loop() {
       DebugSerial.println(recv);
       DebugSerial.println(SNIPE.lora_getRssi());
       DebugSerial.println(SNIPE.lora_getSnr());
+                  //firebase로 심박수 데이터를 넘길때
+    if (Firebase.ready() && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0))//insert code start
+  {
+    sendDataPrevMillis = millis();
+    
+    Serial.printf("Set string... %s\n", Firebase.setString(fbdo, F("/Data/heartbeat"), recv) ? "ok" : fbdo.errorReason().c_str());
+    //Serial.printf("Get string... %s\n", Firebase.getString(fbdo, F("/Data/heartbeat")) ? fbdo.to<const char *>() : fbdo.errorReason().c_str());
+    FirebaseJson json;//insert code end
+  }
     }
     else
     {
@@ -146,17 +155,7 @@ void loop() {
       delay(500);
     }
     
-            //firebase로 심박수/gps 데이터를 넘길때
-    if (Firebase.ready() && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0))//insert code start
-  {
-    sendDataPrevMillis = millis();
-    
-    Serial.printf("Set string... %s\n", Firebase.setString(fbdo, F("/Data/heartbeat"), recv) ? "ok" : fbdo.errorReason().c_str());
-
-    Serial.printf("Get string... %s\n", Firebase.getString(fbdo, F("/Data/heartbeat")) ? fbdo.to<const char *>() : fbdo.errorReason().c_str());
-
-    FirebaseJson json;//insert code end
-  }
+        delay(2000);
         stat = 1;
       }
     }
@@ -172,6 +171,16 @@ void loop() {
       DebugSerial.println(recv);
       DebugSerial.println(SNIPE.lora_getRssi());
       DebugSerial.println(SNIPE.lora_getSnr());
+                //firebase로 gps 데이터를 넘길때
+    if (Firebase.ready() && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0))//insert code start
+  {
+    sendDataPrevMillis = millis();
+    
+    Serial.printf("Set string... %s\n", Firebase.setString(fbdo, F("/Data/GPS"), recv) ? "ok" : fbdo.errorReason().c_str());
+    //Serial.printf("Get string... %s\n", Firebase.getString(fbdo, F("/Data/GPS")) ? fbdo.to<const char *>() : fbdo.errorReason().c_str());
+
+    FirebaseJson json;//insert code end
+  }
     }
     else
     {
@@ -179,17 +188,7 @@ void loop() {
       delay(500);
     }
     
-            //firebase로 심박수/gps 데이터를 넘길때
-    if (Firebase.ready() && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0))//insert code start
-  {
-    sendDataPrevMillis = millis();
-    
-    Serial.printf("Set string... %s\n", Firebase.setString(fbdo, F("/Data/heartbeat"), recv) ? "ok" : fbdo.errorReason().c_str());
-
-    Serial.printf("Get string... %s\n", Firebase.getString(fbdo, F("/Data/heartbeat")) ? fbdo.to<const char *>() : fbdo.errorReason().c_str());
-
-    FirebaseJson json;//insert code end
-  }
+        delay(2000);
         stat = 0;
       }
     }
