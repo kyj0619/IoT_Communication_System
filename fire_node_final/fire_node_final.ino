@@ -70,7 +70,7 @@ void loop() {
   DebugSerial.println(val);
 
 
-  if(val < 1023){
+  if(val < 1021){
     data = "37.5829, 127.0107";
     tone(buzzer, 500, 500);
   }
