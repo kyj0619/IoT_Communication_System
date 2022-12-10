@@ -1,7 +1,7 @@
 # 화재 경보 및 응급 대처 시스템
 
 ## Gateway
-lora_communication_gateway.ino
+[lora_communication_gateway.ino](https://github.com/kyj0619/IoT_Communication_System/blob/main/lora_communication/lora_communication_gateway/lora_communication_gateway.ino)
 
 ### 사용 하드웨어
 * Wemos D1 Board
@@ -12,7 +12,7 @@ lora_communication_gateway.ino
 
 
 ## 화재 경보 노드
-fire_node_final.ino
+[fire_node_final.ino](https://github.com/kyj0619/IoT_Communication_System/tree/main/fire_node_final/fire_node_final.ino)
 
 ### 사용 하드웨어
 * Arduino Uno Board
@@ -27,7 +27,7 @@ fire_node_final.ino
 
 
 ## 응급 대처 노드
-Heart_node_final.ino
+[Heart_node_final.ino](https://github.com/kyj0619/IoT_Communication_System/blob/main/heart_node_final/heart_node_final.ino)
 
 ### 사용 하드웨어
 * Arduino Uno Board
@@ -46,3 +46,7 @@ CPR 응급처치 시 압력 센서를 이용해 압력을 체크하고, 권고 �
 
 
 ## 안드로이드 앱
+[emptyactivity](https://github.com/kyj0619/IoT_Communication_System/tree/main/emptyactivity)
+
+### 기능
+FireBase 상에 업로드된 내용을 가져와 안드로이드 앱에 출력한다.
