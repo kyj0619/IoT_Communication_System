@@ -66,19 +66,23 @@ void loop() {
 
   int val = analogRead(flame);
   noTone(buzzer);
+  DebugSerial.print("val: ");
+  DebugSerial.println(val);
 
-  String recv = SNIPE.lora_recv();
-  DebugSerial.println(recv);
 
-  if(val < 1022){
+  if(val < 1023){
     data = "37.5829, 127.0107";
-    tone(buzzer, 500, 100);
+    tone(buzzer, 500, 500);
   }
   else
   {
     data = "No Fire";
     noTone(buzzer);
   }
+  
+  String recv = SNIPE.lora_recv();
+  DebugSerial.println(recv);
+  
 
     if (recv != "AT_RX_TIMEOUT" && recv != "AT_RX_ERROR")
     {
